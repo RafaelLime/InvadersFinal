@@ -30,7 +30,8 @@ def play(dificult = 2):
     nave = Sprite("Sprites/nave2.png")
     nave.set_position(Screen_W/2, Screen_H - 100)
     reload = 0
-
+    atirou = True
+    # Esse comentário só vai aparecer na jogabilidade
 
     while True:
         
@@ -155,4 +156,3 @@ def main_menu():
         
 
 main_menu()
-
