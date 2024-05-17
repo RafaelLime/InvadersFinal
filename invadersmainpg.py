@@ -4,6 +4,7 @@ from PPlay.gameimage import *
 from PPlay.gameobject import *
 from PPlay.sprite import *
 from PPlay.keyboard import *
+from monstros import *
 
 pygame.init()
 
@@ -14,7 +15,7 @@ Screen_W = 1000
 Screen_H = 700
 janela = Window(Screen_W, Screen_H)
 fundo = GameImage("Sprites/menu.jpg")
-janela.set_title("SpaceInvaders - Pedro Guedes")
+janela.set_title("SpaceInvaders - Rafael Lima")
 
 seta = GameImage("Sprites/seta.jpg")
 seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) - 80)
@@ -24,20 +25,44 @@ janela.set_background_color([0, 0, 0])
 teclado = Window.get_keyboard()
 
 
+
+
 def play(dificult = 2):
 
     tiros = []
     nave = Sprite("Sprites/nave2.png")
     nave.set_position(Screen_W/2, Screen_H - 100)
     reload = 0
-    atirou = True
-    # Esse comentário só vai aparecer na jogabilidade
+    # Linhas e colunas de monstros
+    lin = 3
+    col = 5
+    velocidade_x = 250
+    velocidade_y = 100
+    # Monstros (Inimigos)
+    matriz_inimigos = desenhar_mostros(lin, col, Screen_W)
 
     while True:
         
 
         janela.set_background_color([0, 0, 0])
         nave.draw()
+
+        
+        
+
+        # Movimentação dos monstros
+        for i in range(lin):
+            for j in range(col):
+                
+                matriz_inimigos[i][j].x += velocidade_x * janela.delta_time()
+                matriz_inimigos[i][j].draw()
+                if (matriz_inimigos[i][j].x <= 0 or matriz_inimigos[i][j].x + 40 >= Screen_W):
+                    # Movimento vertical
+                    for ii in range(lin):
+                        for jj in range(col):
+                            matriz_inimigos[ii][jj].y += velocidade_y
+                    
+                    velocidade_x *= -1 
 
         # Movimento da nave
         if (teclado.key_pressed("left") and nave.x > 0):
@@ -55,7 +80,7 @@ def play(dificult = 2):
         
         for tiro in tiros:
             tiro.draw()
-            tiro.y -= 100*janela.delta_time()
+            tiro.y -= 250*janela.delta_time()
             if (tiro.y < 0):
                 del tiro
 
@@ -70,6 +95,12 @@ def play(dificult = 2):
             reload = 0
         else:
             reload -= janela.delta_time()
+        
+
+        # Condição para vitória dos monstros
+        if (matriz_inimigos[lin-1][0].y >= nave.y - nave.height):
+            vitoria_monstros(janela, Screen_W, Screen_H)
+
         janela.update()
     
 def dificuldade():
@@ -153,6 +184,6 @@ def main_menu():
 
 
         janela.update()
-        
+         
 
 main_menu()
