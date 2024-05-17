@@ -37,7 +37,7 @@ def play(dificult = 2):
     lin = 3
     col = 5
     velocidade_x = 250
-    velocidade_y = 100
+    velocidade_y = 75
     # Monstros (Inimigos)
     matriz_inimigos = desenhar_mostros(lin, col, Screen_W)
 
@@ -47,8 +47,6 @@ def play(dificult = 2):
         janela.set_background_color([0, 0, 0])
         nave.draw()
 
-        
-        
 
         # Movimentação dos monstros
         for i in range(lin):
@@ -58,9 +56,10 @@ def play(dificult = 2):
                 matriz_inimigos[i][j].draw()
                 if (matriz_inimigos[i][j].x <= 0 or matriz_inimigos[i][j].x + 40 >= Screen_W):
                     # Movimento vertical
-                    for ii in range(lin):
-                        for jj in range(col):
-                            matriz_inimigos[ii][jj].y += velocidade_y
+                    for linha in matriz_inimigos:
+                        for monstro in linha:
+                            monstro.x -= velocidade_x * janela.delta_time()
+                            monstro.y += velocidade_y
                     
                     velocidade_x *= -1 
 
@@ -98,8 +97,11 @@ def play(dificult = 2):
         
 
         # Condição para vitória dos monstros
-        if (matriz_inimigos[lin-1][0].y >= nave.y - nave.height):
+        if (matriz_inimigos[lin-1][0].y >= nave.y):
             vitoria_monstros(janela, Screen_W, Screen_H)
+
+        # Cálculo do FPS
+        # print(f"FPS: {1/janela.delta_time()*1000}")
 
         janela.update()
     

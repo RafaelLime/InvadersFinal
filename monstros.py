@@ -18,13 +18,6 @@ def desenhar_mostros(lin, col, jan_x):
             monstro[i][j].draw()
     
     return monstro
-    
-    
-
-
-    
-
-# def movimento_v():
 
 
 def vitoria_monstros(janela, janela_x, janela_y):
