@@ -52,7 +52,8 @@ def play(dificult = 2):
 
         if mobs == lin * col:
             print("Você venceu!")
-            print(f"Sua pontuação na partida: {score}")
+            score += (200 - janela.time_elapsed()/1000)*10
+            print(f"Sua pontuação na partida: {int(score)}pts")
             break
         
         # Movimentação dos monstros
