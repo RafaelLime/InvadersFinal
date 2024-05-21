@@ -5,6 +5,7 @@ from PPlay.gameobject import *
 from PPlay.sprite import *
 from PPlay.keyboard import *
 from monstros import *
+from PPlay.animation import *
 
 pygame.init()
 
@@ -36,6 +37,8 @@ def play(dificult = 2):
     # Linhas e colunas de monstros
     lin = 3
     col = 5
+    mobs = 0
+    score = 0
     velocidade_x = 250
     velocidade_y = 75
     # Monstros (Inimigos)
@@ -47,21 +50,40 @@ def play(dificult = 2):
         janela.set_background_color([0, 0, 0])
         nave.draw()
 
-
+        if mobs == lin * col:
+            print("Você venceu!")
+            print(f"Sua pontuação na partida: {score}")
+            break
+        
         # Movimentação dos monstros
-        for i in range(lin):
-            for j in range(col):
+        for linha in matriz_inimigos:
+            for monstro in linha:
+
+                # Vitória dos monstros
+                if monstro.y >= nave.y:
+                    vitoria_monstros(janela, Screen_W, Screen_H)
                 
-                matriz_inimigos[i][j].x += velocidade_x * janela.delta_time()
-                matriz_inimigos[i][j].draw()
-                if (matriz_inimigos[i][j].x <= 0 or matriz_inimigos[i][j].x + 40 >= Screen_W):
+                monstro.x += velocidade_x * janela.delta_time()
+                monstro.draw()
+                if (monstro.x <= 0 or monstro.x + 40 >= Screen_W):
                     # Movimento vertical
                     for linha in matriz_inimigos:
                         for monstro in linha:
                             monstro.x -= velocidade_x * janela.delta_time()
                             monstro.y += velocidade_y
                     
-                    velocidade_x *= -1 
+                    velocidade_x *= -1
+                
+                # Colisão dos monstros com tiro
+                for tiro in tiros:
+                    if (monstro.collided(tiro)):
+                        linha.remove(monstro)
+                        tiros.remove(tiro)
+                        mobs += 1
+                        score += 100
+                        break
+                        
+                
 
         # Movimento da nave
         if (teclado.key_pressed("left") and nave.x > 0):
@@ -97,8 +119,8 @@ def play(dificult = 2):
         
 
         # Condição para vitória dos monstros
-        if (matriz_inimigos[lin-1][0].y >= nave.y):
-            vitoria_monstros(janela, Screen_W, Screen_H)
+        # if (matriz_inimigos[lin-1][0].y >= nave.y):
+        #     vitoria_monstros(janela, Screen_W, Screen_H)
 
         # Cálculo do FPS
         # print(f"FPS: {1/janela.delta_time()*1000}")
