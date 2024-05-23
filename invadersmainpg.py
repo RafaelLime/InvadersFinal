@@ -49,9 +49,9 @@ def play(dificult = 2):
 
         janela.set_background_color([0, 0, 0])
         nave.draw()
+        janela.draw_text(f"Pontuação: {int(score)}", x=Screen_W - 180, y=20, size=24, color=(255, 255, 255))
 
         if mobs == lin * col:
-            print("Você venceu!")
             score += (200 - janela.time_elapsed()/1000)*10
             print(f"Sua pontuação na partida: {int(score)}pts")
             break
