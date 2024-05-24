@@ -77,12 +77,15 @@ def play(dificult = 2):
                 
                 # Colisão dos monstros com tiro
                 for tiro in tiros:
-                    if (monstro.collided(tiro)):
-                        linha.remove(monstro)
-                        tiros.remove(tiro)
-                        mobs += 1
-                        score += 100
-                        break
+                    if tiro.y < monstro.y or tiro.x < monstro.x:
+                        continue
+                    else:
+                        if (monstro.collided(tiro)):
+                            linha.remove(monstro)
+                            tiros.remove(tiro)
+                            mobs += 1
+                            score += 100
+                            break
                         
                 
 
