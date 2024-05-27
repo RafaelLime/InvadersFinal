@@ -6,6 +6,7 @@ from PPlay.sprite import *
 from PPlay.keyboard import *
 from monstros import *
 from PPlay.animation import *
+from random import choice
 
 pygame.init()
 
@@ -31,9 +32,11 @@ teclado = Window.get_keyboard()
 def play(dificult = 2):
 
     tiros = []
+    tiros_mostro = []
     nave = Sprite("Sprites/nave2.png")
     nave.set_position(Screen_W/2, Screen_H - 100)
     reload = 0
+    m_reload = 0
     # Linhas e colunas de monstros
     lin = 3
     col = 5
@@ -58,7 +61,15 @@ def play(dificult = 2):
         
         # Movimentação dos monstros
         for linha in matriz_inimigos:
+            if len(linha) != 0:
+                atira = choice(linha)
             for monstro in linha:
+                if monstro == atira and m_reload <= 0:
+                    proj = Sprite("Sprites/tirog.png")
+                    proj.set_position(monstro.x+monstro.width/2, monstro.y + monstro.height)
+                    tiros_mostro.append(proj)
+                    m_reload = 0.8
+
 
                 # Vitória dos monstros
                 if monstro.y >= nave.y:
@@ -109,6 +120,16 @@ def play(dificult = 2):
             if (tiro.y < 0):
                 del tiro
 
+        for projetil in tiros_mostro:
+            projetil.draw()
+            projetil.y += 250*janela.delta_time()
+            if nave.collided(projetil):
+                vitoria_monstros(janela, Screen_W, Screen_H)
+                exit()
+            if (projetil.y > Screen_H):
+                del projetil
+            
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -120,6 +141,11 @@ def play(dificult = 2):
             reload = 0
         else:
             reload -= janela.delta_time()
+        
+        if (m_reload < 0):
+            m_reload = 0
+        else:
+            m_reload -= janela.delta_time()
         
 
         # Condição para vitória dos monstros
