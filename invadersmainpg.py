@@ -6,7 +6,7 @@ from PPlay.sprite import *
 from PPlay.keyboard import *
 from monstros import *
 from PPlay.animation import *
-from random import choice
+from random import choice, randint
 
 pygame.init()
 
@@ -44,6 +44,9 @@ def play(dificult = 2):
     score = 0
     velocidade_x = 250
     velocidade_y = 75
+    hp = 3
+    invencivel = False
+    time_inv = 0
     # Monstros (Inimigos)
     matriz_inimigos = desenhar_mostros(lin, col, Screen_W)
 
@@ -51,14 +54,27 @@ def play(dificult = 2):
         
 
         janela.set_background_color([0, 0, 0])
-        nave.draw()
         janela.draw_text(f"Pontuação: {int(score)}", x=Screen_W - 180, y=20, size=24, color=(255, 255, 255))
+        janela.draw_text(f"Hp: {hp}", x=20, y=20, size=24, color=(255, 255, 255))
 
         if mobs == lin * col:
             score += (200 - janela.time_elapsed()/1000)*10
             print(f"Sua pontuação na partida: {int(score)}pts")
             break
         
+        if invencivel:
+            time_inv -= janela.delta_time()
+            print(hp)
+            if bool(randint(0,1)):
+                nave.draw()
+            
+            if time_inv <= 0:
+                time_inv = 0
+                invencivel = False
+        else:
+            nave.draw()
+
+
         # Movimentação dos monstros
         for linha in matriz_inimigos:
             if len(linha) != 0:
@@ -123,9 +139,16 @@ def play(dificult = 2):
         for projetil in tiros_mostro:
             projetil.draw()
             projetil.y += 250*janela.delta_time()
-            if nave.collided(projetil):
-                vitoria_monstros(janela, Screen_W, Screen_H)
-                exit()
+            if nave.collided(projetil) and not invencivel:
+                # Dano ao player
+                hp -= 1
+                invencivel = True
+                time_inv = 2
+                if hp == 0:
+                    vitoria_monstros(janela, Screen_W, Screen_H)
+                    exit()
+                    
+                
             if (projetil.y > Screen_H):
                 del projetil
             
