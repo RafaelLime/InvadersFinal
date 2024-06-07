@@ -47,6 +47,7 @@ def play(dificult = 2):
     hp = 3
     invencivel = False
     time_inv = 0
+    atingiu = False
     # Monstros (Inimigos)
     matriz_inimigos = desenhar_mostros(lin, col, Screen_W)
 
@@ -64,7 +65,6 @@ def play(dificult = 2):
         
         if invencivel:
             time_inv -= janela.delta_time()
-            print(hp)
             if bool(randint(0,1)):
                 nave.draw()
             
@@ -84,7 +84,7 @@ def play(dificult = 2):
                     proj = Sprite("Sprites/tirog.png")
                     proj.set_position(monstro.x+monstro.width/2, monstro.y + monstro.height)
                     tiros_mostro.append(proj)
-                    m_reload = 0.8
+                    m_reload = 0.5
 
 
                 # Vitória dos monstros
@@ -144,13 +144,16 @@ def play(dificult = 2):
                 hp -= 1
                 invencivel = True
                 time_inv = 2
+                nave.set_position(Screen_W/2, Screen_H - 100)
+                atingiu = True
                 if hp == 0:
-                    vitoria_monstros(janela, Screen_W, Screen_H)
+                    game_over(score, janela, teclado)
                     exit()
                     
                 
-            if (projetil.y > Screen_H):
-                del projetil
+            if projetil.y > Screen_H or atingiu:
+                tiros_mostro.remove(projetil)
+                atingiu = False
             
 
         for event in pygame.event.get():
@@ -261,6 +264,18 @@ def main_menu():
 
 
         janela.update()
-         
+
+def game_over(score, janela, teclado):
+    janela.set_background_color([0, 0, 0])
+    while True:
+        janela.draw_text("GAME OVER",Screen_W/3 + 100, Screen_H/2 - 40, size=36, color=([255, 255, 255]))
+        janela.draw_text(f"Pontuação: {score}",Screen_W/3 - 40, Screen_H/2 + 80, size=36, color=([255, 255, 255]))
+        janela.draw_text(f"Pressione espaço para voltar ao menu",Screen_W/3 - 40, Screen_H/2 + 120, size=36, color=([255, 255, 255]))
+        if teclado.key_pressed("space"):
+            break
+        janela.update()
+    
+    main_menu()
+
 
 main_menu()
