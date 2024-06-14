@@ -7,6 +7,7 @@ from PPlay.keyboard import *
 from monstros import *
 from PPlay.animation import *
 from random import choice, randint
+from ranking import *
 
 pygame.init()
 
@@ -25,11 +26,16 @@ seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) - 80)
 janela.set_background_color([0, 0, 0])
 
 teclado = Window.get_keyboard()
-
+lin = 3
+col = 5
+score = 0
+hp = 3
 
 
 
 def play(dificult = 2):
+    global score
+    global hp
 
     tiros = []
     tiros_mostro = []
@@ -38,13 +44,12 @@ def play(dificult = 2):
     reload = 0
     m_reload = 0
     # Linhas e colunas de monstros
-    lin = 3
-    col = 5
+    
     mobs = 0
-    score = 0
+    
     velocidade_x = 250
     velocidade_y = 75
-    hp = 3
+    
     invencivel = False
     time_inv = 0
     atingiu = False
@@ -147,8 +152,11 @@ def play(dificult = 2):
                 nave.set_position(Screen_W/2, Screen_H - 100)
                 atingiu = True
                 if hp == 0:
-                    game_over(score, janela, teclado)
-                    exit()
+                    score += (200 - janela.time_elapsed()/1000)*10
+                    nome = input("Digite seu nome para registro: ")
+                    registrar(nome,score)
+                    return 0
+                    
                     
                 
             if projetil.y > Screen_H or atingiu:
@@ -183,6 +191,8 @@ def play(dificult = 2):
 
         janela.update()
     
+    return 1
+    
 def dificuldade():
     while True:
         
@@ -205,7 +215,17 @@ def dificuldade():
                     main_menu()
         janela.update()
 
-#def ranking():
+def ranking():
+    
+    lista = consultar()
+    while True:
+        janela.set_background_color([0,0,0])
+        mostrar(janela,lista,Screen_W)
+        if teclado.key_pressed("ESC"):
+            break
+        janela.update()
+    return
+
     
 
 def main_menu():
@@ -230,10 +250,11 @@ def main_menu():
             
 
         if GameState == 0 and teclado.key_pressed("ENTER"):
-            play()
+            return 1
         if GameState == 1 and teclado.key_pressed("ENTER"):
             dificuldade()
-                
+        if GameState == 2 and teclado.key_pressed("ENTER"):
+            ranking()        
         if GameState == 3 and teclado.key_pressed("ENTER"):
             pygame.quit()
             sys.exit()
@@ -278,4 +299,12 @@ def game_over(score, janela, teclado):
     main_menu()
 
 
-main_menu()
+if main_menu() == 1:
+    diff = 2
+    while True:
+        if play(diff) == 0:
+            break
+        col += 1
+        diff += 0.2
+
+    game_over(score, janela, teclado)
