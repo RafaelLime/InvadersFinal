@@ -1,6 +1,7 @@
 from PPlay.window import *
 from PPlay.sprite import *
 from PPlay.keyboard import *
+from PPlay.collision import *
 
 def movimento_nave(janela, teclado, nave, Screen_W, dificult):
     if (teclado.key_pressed("left") and nave.x > 0):
@@ -16,3 +17,11 @@ def criar_tiro(teclado, tiros, nave, reload):
             reload = 0.3
             tiros.append(tiro)
     return tiros, reload
+
+def movimentar_tiros(janela, tiros):
+    for tiro in tiros:
+        tiro.draw()
+        tiro.y -= 250*janela.delta_time()
+        if (tiro.y < 0):
+            del tiro
+    return tiros

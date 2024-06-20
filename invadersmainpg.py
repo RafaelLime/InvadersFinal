@@ -129,11 +129,7 @@ def play(dificult = 2):
         # Se a tecla espaço está pressionada criar novo tiro
         tiros, reload = criar_tiro(teclado, tiros, nave, reload)
         
-        for tiro in tiros:
-            tiro.draw()
-            tiro.y -= 250*janela.delta_time()
-            if (tiro.y < 0):
-                del tiro
+        tiros = movimentar_tiros(janela, tiros)
 
         for projetil in tiros_mostro:
             projetil.draw()
