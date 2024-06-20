@@ -1,7 +1,0 @@
-Documentação
-
-1) O menu principal está funcional, apenas com um bug na seleção ao apertar uma tecla.
-
-2) Na seleção da dificildade não é possível selecionar nada. Não é possível ir para o jogo a partir da tela de dificuldade.
-
-3) Os demais botões do menu estão funcionais.

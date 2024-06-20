@@ -8,6 +8,7 @@ from monstros import *
 from PPlay.animation import *
 from random import choice, randint
 from ranking import *
+from game import *
 
 pygame.init()
 
@@ -122,18 +123,11 @@ def play(dificult = 2):
                 
 
         # Movimento da nave
-        if (teclado.key_pressed("left") and nave.x > 0):
-            nave.x = nave.x - 150*janela.delta_time() + dificult*20*janela.delta_time()
-        elif (teclado.key_pressed("right") and nave.x < Screen_W - nave.width):
-            nave.x = nave.x + 150*janela.delta_time() - dificult*20*janela.delta_time()
+        nave = movimento_nave(janela, teclado, nave, Screen_W, dificult)
         
         # Tiros
         # Se a tecla espaço está pressionada criar novo tiro
-        if (teclado.key_pressed("space") and reload <= 0):
-            tiro = Sprite("Sprites/tirog.png")
-            tiro.set_position(nave.x+nave.width/2, nave.y)
-            reload = 0.3
-            tiros.append(tiro)
+        tiros, reload = criar_tiro(teclado, tiros, nave, reload)
         
         for tiro in tiros:
             tiro.draw()
