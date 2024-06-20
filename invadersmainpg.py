@@ -69,16 +69,8 @@ def play(dificult = 2):
             print(f"Sua pontuação na partida: {int(score)}pts")
             break
         
-        if invencivel:
-            time_inv -= janela.delta_time()
-            if bool(randint(0,1)):
-                nave.draw()
-            
-            if time_inv <= 0:
-                time_inv = 0
-                invencivel = False
-        else:
-            nave.draw()
+        # Desenhar nave
+        time_inv, nave, invencivel = desenharNave(janela, nave, time_inv, invencivel)
 
 
         # Movimentação dos monstros
