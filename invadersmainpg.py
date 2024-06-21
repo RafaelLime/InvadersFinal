@@ -197,16 +197,7 @@ def dificuldade():
                     main_menu()
         janela.update()
 
-def ranking():
-    
-    lista = consultar()
-    while True:
-        janela.set_background_color([0,0,0])
-        mostrar(janela,lista,Screen_W)
-        if teclado.key_pressed("ESC"):
-            break
-        janela.update()
-    return
+
 
     
 
@@ -236,7 +227,7 @@ def main_menu():
         if GameState == 1 and teclado.key_pressed("ENTER"):
             dificuldade()
         if GameState == 2 and teclado.key_pressed("ENTER"):
-            ranking()        
+            ranking(janela, teclado, Screen_W)        
         if GameState == 3 and teclado.key_pressed("ENTER"):
             pygame.quit()
             sys.exit()

@@ -30,3 +30,14 @@ def mostrar(janela,lista,Screen_W):
                      , y= 175, size= 24, color=(255,255,255), font_name="Arial")
     janela.draw_text(text=f'{lista[4].nome} {lista[4].pontuacao}', x= (Screen_W / 2)
                      , y= 200, size= 24, color=(255,255,255), font_name="Arial")
+
+def ranking(janela, teclado, Screen_W):
+    
+    lista = consultar()
+    while True:
+        janela.set_background_color([0,0,0])
+        mostrar(janela,lista,Screen_W)
+        if teclado.key_pressed("ESC"):
+            break
+        janela.update()
+    return
