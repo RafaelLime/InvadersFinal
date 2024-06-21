@@ -6,7 +6,7 @@ from PPlay.sprite import *
 from PPlay.keyboard import *
 from monstros import *
 from PPlay.animation import *
-from random import choice, randint
+from random import choice
 from ranking import *
 from game import *
 
@@ -153,15 +153,8 @@ def play(dificult = 2):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     main_menu()
-        if (reload < 0):
-            reload = 0
-        else:
-            reload -= janela.delta_time()
-        
-        if (m_reload < 0):
-            m_reload = 0
-        else:
-            m_reload -= janela.delta_time()
+        # Atualização dos reloads
+        reload, m_reload = updateReloads(janela, reload, m_reload)
         
 
         # Condição para vitória dos monstros

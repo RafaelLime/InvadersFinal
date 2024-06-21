@@ -39,3 +39,15 @@ def movimentar_tiros(janela, tiros):
         if (tiro.y < 0):
             del tiro
     return tiros
+
+def updateReloads(janela, reload, m_reload):
+    if (reload < 0):
+        reload = 0
+    else:
+        reload -= janela.delta_time()
+    
+    if (m_reload < 0):
+        m_reload = 0
+    else:
+        m_reload -= janela.delta_time()
+    return reload, m_reload
