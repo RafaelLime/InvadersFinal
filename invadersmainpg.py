@@ -9,6 +9,7 @@ from PPlay.animation import *
 from random import choice
 from ranking import *
 from game import *
+import numpy
 
 pygame.init()
 
@@ -252,18 +253,6 @@ def main_menu():
 
         janela.update()
 
-def game_over(score, janela, teclado):
-    janela.set_background_color([0, 0, 0])
-    while True:
-        janela.draw_text("GAME OVER",Screen_W/3 + 100, Screen_H/2 - 40, size=36, color=([255, 255, 255]))
-        janela.draw_text(f"Pontuação: {score}",Screen_W/3 - 40, Screen_H/2 + 80, size=36, color=([255, 255, 255]))
-        janela.draw_text(f"Pressione espaço para voltar ao menu",Screen_W/3 - 40, Screen_H/2 + 120, size=36, color=([255, 255, 255]))
-        if teclado.key_pressed("space"):
-            break
-        janela.update()
-    
-    main_menu()
-
 
 if main_menu() == 1:
     diff = 2
@@ -273,4 +262,5 @@ if main_menu() == 1:
         col += 1
         diff += 0.2
 
-    game_over(score, janela, teclado)
+    game_over(score, janela, teclado, Screen_W, Screen_H)
+    main_menu()

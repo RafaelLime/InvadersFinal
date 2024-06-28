@@ -8,3 +8,5 @@ JP: 3243
 GUY: 11983
 jn: 2777
 Rafael_Lima: 15163
+Kassio: 2585
+GamePro: 14695
