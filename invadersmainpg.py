@@ -41,11 +41,7 @@ def play(dificult = 2):
 
     tiros = []
     tiros_mostro = []
-    shields = []
-    for i in range(4):
-        shield = Sprite("Sprites/escuro_inteiro.png")
-        shield.set_position((Screen_W - 250*i) - shield.width - 100, Screen_H - 150)
-        shields.append(shield)
+    shields = desenhar_escudos(Screen_H, Screen_W)
     nave = Sprite("Sprites/nave2.png")
     nave.set_position(Screen_W/2, Screen_H - 100)
     reload = 0
@@ -79,8 +75,7 @@ def play(dificult = 2):
         time_inv, nave, invencivel = desenharNave(janela, nave, time_inv, invencivel)
 
         # Desenhar escudos
-        for i in shields:
-            i.draw()
+        updateEscudos(shields)
         
 
         # Movimentação dos monstros
@@ -96,7 +91,7 @@ def play(dificult = 2):
 
 
                 # Vitória dos monstros
-                if monstro.y >= nave.y:
+                if monstro.y >= shields[0].y:
                     vitoria_monstros(janela, Screen_W, Screen_H)
                 
                 monstro.x += velocidade_x * janela.delta_time()
@@ -161,6 +156,11 @@ def play(dificult = 2):
             
             for escud in shields:
                 if projetil.collided(escud):
+                    if escud.height <= 4:
+                        shields.remove(escud)
+                    else:
+                        escud.height -= 3
+                        escud.y += 3
                     tiros_mostro.remove(projetil)
 
         for event in pygame.event.get():

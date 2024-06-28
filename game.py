@@ -13,9 +13,9 @@ def movimento_nave(janela, teclado, nave, Screen_W, dificult):
 
 def desenhar_escudos(Screen_H, Screen_W):
     shields = []
-    for i in range(3):
+    for i in range(4):
         shield = Sprite("Sprites/escuro_inteiro.png")
-        shield.set_position(Screen_W - 100*i, Screen_H - 200)
+        shield.set_position((Screen_W - 250*i) - shield.width - 100, Screen_H - 150)
         shields.append(shield)
     return shields
 
