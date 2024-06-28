@@ -41,6 +41,11 @@ def play(dificult = 2):
 
     tiros = []
     tiros_mostro = []
+    shields = []
+    for i in range(4):
+        shield = Sprite("Sprites/escuro_inteiro.png")
+        shield.set_position((Screen_W - 250*i) - shield.width - 100, Screen_H - 150)
+        shields.append(shield)
     nave = Sprite("Sprites/nave2.png")
     nave.set_position(Screen_W/2, Screen_H - 100)
     reload = 0
@@ -73,6 +78,10 @@ def play(dificult = 2):
         # Desenhar nave
         time_inv, nave, invencivel = desenharNave(janela, nave, time_inv, invencivel)
 
+        # Desenhar escudos
+        for i in shields:
+            i.draw()
+        
 
         # Movimentação dos monstros
         for linha in matriz_inimigos:
@@ -103,6 +112,10 @@ def play(dificult = 2):
                 
                 # Colisão dos monstros com tiro
                 for tiro in tiros:
+                    for i in shields:
+                            if tiro.collided(i):
+                                tiros.remove(tiro)
+
                     if tiro.y < monstro.y or tiro.x < monstro.x:
                         continue
                     else:
@@ -113,7 +126,7 @@ def play(dificult = 2):
                             score += 100
                             break
                         
-                
+        
 
         # Movimento da nave
         nave = movimento_nave(janela, teclado, nave, Screen_W, dificult)
@@ -146,6 +159,9 @@ def play(dificult = 2):
                 tiros_mostro.remove(projetil)
                 atingiu = False
             
+            for escud in shields:
+                if projetil.collided(escud):
+                    tiros_mostro.remove(projetil)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

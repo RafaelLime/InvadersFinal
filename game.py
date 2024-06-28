@@ -11,6 +11,18 @@ def movimento_nave(janela, teclado, nave, Screen_W, dificult):
         nave.x = nave.x + 150*janela.delta_time() - dificult*20*janela.delta_time()
     return nave
 
+def desenhar_escudos(Screen_H, Screen_W):
+    shields = []
+    for i in range(3):
+        shield = Sprite("Sprites/escuro_inteiro.png")
+        shield.set_position(Screen_W - 100*i, Screen_H - 200)
+        shields.append(shield)
+    return shields
+
+def updateEscudos(shields):
+    for i in shields:
+        i.draw()
+
 def desenharNave(janela, nave, time_inv, invencivel):
     if invencivel:
         time_inv -= janela.delta_time()
