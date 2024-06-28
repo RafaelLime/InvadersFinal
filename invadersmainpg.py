@@ -93,6 +93,7 @@ def play(dificult = 2):
                 # Vitória dos monstros
                 if monstro.y >= shields[0].y:
                     vitoria_monstros(janela, Screen_W, Screen_H)
+                    return 0
                 
                 monstro.x += velocidade_x * janela.delta_time()
                 monstro.draw()
