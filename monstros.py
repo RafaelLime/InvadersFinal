@@ -47,3 +47,8 @@ def MovimentoHorizontalMonstro(monstro:Sprite, Vx:float, jan:Window) -> Sprite:
     monstro.x += Vx * jan.delta_time()
     monstro.draw()
     return monstro
+
+def MovimentarTiroMonstro(tiro:Sprite, jan:Window) -> Sprite:
+    tiro.draw()
+    tiro.y += 250*jan.delta_time()
+    return tiro

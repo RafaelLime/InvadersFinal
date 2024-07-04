@@ -2,6 +2,7 @@ from math import floor
 from PPlay.mouse import *
 from PPlay.window import *
 from PPlay.gameimage import *
+from PPlay.keyboard import *
 
 class Pontuador:
     def __init__(self,nome,pontuacao):
@@ -67,3 +68,62 @@ def SetPositionSeta(GameState:int, seta:GameImage, Screen_W:int, Screen_H:int) -
         seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) + 220)
     
     return seta
+
+def dificuldade(jan:Window, teclado:Keyboard, Screen_W:int) -> None:
+    while True:
+        
+        jan.set_background_color([0, 0, 0])
+
+        jan.draw_text(text='Facil', x= (Screen_W / 2)
+                     , y= 20, size= 24, color=(255,255,255), font_name="Arial")
+        jan.draw_text(text='Normal', x= (Screen_W / 2)
+                     , y= 60, size= 24, color=(255,255,255), font_name="Arial")
+        jan.draw_text(text='Hard', x= (Screen_W / 2)
+                     , y= 100, size= 24, color=(255,255,255), font_name="Arial")
+
+
+        if teclado.key_pressed("esc"):
+            break
+        jan.update()
+    return
+
+def main_menu(jan:Window, teclado:Keyboard, mouse:Mouse, Screen_W:int, Screen_H:int):
+    fundo = GameImage("Sprites/menu.jpg")
+    seta = GameImage("Sprites/seta.jpg")
+    seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) - 80)
+
+    GameState = 0
+
+    while True:
+        
+        jan.set_background_color([0, 0, 0])
+        
+            
+        if mouse.is_over_area([460,280],[760,325]):
+            GameState = 0
+        elif mouse.is_over_area([460,380],[760,425]):
+            GameState = 1
+        elif mouse.is_over_area([460,480],[760,525]):
+            GameState = 2    
+        elif mouse.is_over_area([460,580],[760,625]):
+            GameState = 3
+            
+
+        if mouse.is_over_area([460,280],[760,325]) and mouse.is_button_pressed(1):
+            return 1
+        if mouse.is_over_area([460,380],[760,425]) and mouse.is_button_pressed(1):
+            dificuldade(jan, teclado, Screen_W)
+        if mouse.is_over_area([460,480],[760,525]) and mouse.is_button_pressed(1):
+            ranking(jan, teclado, Screen_W)        
+        if mouse.is_over_area([460,580],[760,625]) and mouse.is_button_pressed(1):
+            break
+                    
+
+        seta = SetPositionSeta(GameState, seta, Screen_W, Screen_H)
+              
+        fundo.draw()
+        seta.draw()
+
+
+        jan.update()
+    return 0

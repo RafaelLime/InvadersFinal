@@ -8,7 +8,7 @@ from PPlay.mouse import *
 from monstros import *
 from PPlay.animation import *
 from random import choice
-from ranking import *
+from paginas import *
 from game import *
 
 pygame.init()
@@ -19,19 +19,11 @@ pygame.init()
 Screen_W, Screen_H = 1000, 700
 
 janela = Window(Screen_W, Screen_H)
-fundo = GameImage("Sprites/menu.jpg")
 janela.set_title("SpaceInvaders - Rafael Lima")
-
-
-
 janela.set_background_color([0, 0, 0])
-
 teclado = Window.get_keyboard()
 mouse = Window.get_mouse()
 lin, col, score, hp = 3, 5, 0, 3
-
-
-
 
 def play(dificult = 2):
     global score
@@ -42,17 +34,10 @@ def play(dificult = 2):
     shields = desenhar_escudos(Screen_H, Screen_W)
     nave = Sprite("Sprites/nave2.png")
     nave.set_position(Screen_W/2, Screen_H - 100)
-    reload = 0
-    m_reload = 0
-    
-    mobs = 0
-    
-    velocidade_x = 125
-    velocidade_y = 75
-    
-    invencivel = False
-    time_inv = 0
-    atingiu = False
+    reload, m_reload, mobs, time_inv = 0, 0, 0, 0 
+    velocidade_x, velocidade_y = 125, 75
+    invencivel, atingiu = False, False
+
     # Monstros (Inimigos)
     matriz_inimigos = desenhar_mostros(lin, col, Screen_W)
 
@@ -122,8 +107,7 @@ def play(dificult = 2):
         tiros = movimentar_tiros(janela, tiros)
 
         for projetil in tiros_mostro:
-            projetil.draw()
-            projetil.y += 250*janela.delta_time()
+            projetil = MovimentarTiroMonstro(projetil, janela)
             if nave.collided(projetil) and not invencivel:
                 # Dano ao player
                 hp -= 1
@@ -161,89 +145,15 @@ def play(dificult = 2):
                     main_menu()
         # Atualização dos reloads
         reload, m_reload = updateReloads(janela, reload, m_reload)
-        
-
-        # Cálculo do FPS
-        # print(f"FPS: {1/janela.delta_time()*1000}")
 
         janela.update()
     
-    return 1
-    
-def dificuldade():
-    while True:
-        
-        janela.set_background_color([0, 0, 0])
-
-        janela.draw_text(text='Facil', x= (Screen_W / 2)
-                     , y= 20, size= 24, color=(255,255,255), font_name="Arial")
-        janela.draw_text(text='Normal', x= (Screen_W / 2)
-                     , y= 60, size= 24, color=(255,255,255), font_name="Arial")
-        janela.draw_text(text='Hard', x= (Screen_W / 2)
-                     , y= 100, size= 24, color=(255,255,255), font_name="Arial")
-
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    main_menu()
-        janela.update()
+    return 1  
 
 
 
-    
 
-def main_menu():
-    seta = GameImage("Sprites/seta.jpg")
-    seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) - 80)
-
-    GameState = 0
-
-    while True:
-        
-        janela.set_background_color([0, 0, 0])     
-
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-        
-            
-        if mouse.is_over_area([460,280],[760,325]):
-            GameState = 0
-        elif mouse.is_over_area([460,380],[760,425]):
-            GameState = 1
-        elif mouse.is_over_area([460,480],[760,525]):
-            GameState = 2    
-        elif mouse.is_over_area([460,580],[760,625]):
-            GameState = 3
-            
-
-        if mouse.is_over_area([460,280],[760,325]) and mouse.is_button_pressed(1):
-            return 1
-        if mouse.is_over_area([460,380],[760,425]) and mouse.is_button_pressed(1):
-            dificuldade()
-        if mouse.is_over_area([460,480],[760,525]) and mouse.is_button_pressed(1):
-            ranking(janela, teclado, Screen_W)        
-        if mouse.is_over_area([460,580],[760,625]) and mouse.is_button_pressed(1):
-            pygame.quit()
-            sys.exit()
-                    
-
-        seta = SetPositionSeta(GameState, seta, Screen_W, Screen_H)
-              
-        fundo.draw()
-        seta.draw()
-
-
-        janela.update()
-
-
-if main_menu() == 1:
+if main_menu(janela, teclado, mouse, Screen_W, Screen_H) == 1:
     diff = 2
     while True:
         if play(diff) == 0:
@@ -252,4 +162,4 @@ if main_menu() == 1:
         diff += 0.2
 
     game_over(score, janela, teclado, Screen_W, Screen_H)
-    main_menu()
+    main_menu(janela, teclado, mouse, Screen_W, Screen_H)
