@@ -212,6 +212,7 @@ def dificuldade():
     
 
 def main_menu():
+    global seta
 
     GameState = 0
 
@@ -247,26 +248,8 @@ def main_menu():
             sys.exit()
                     
 
-        if GameState == 0:
-            seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) - 80)
-        if GameState == 1:
-            seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) + 20)
-        if GameState == 2:
-            seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) + 120)
-        if GameState == 3:
-            seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) + 220)
-        
-        
-
-
-        if GameState > 3:
-            GameState = 0
-            seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) - 80)
-        if GameState < 0:
-           GameState = 3
-           seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) + 320)
-
-        
+        seta = SetPositionSeta(GameState, seta, Screen_W, Screen_H)
+              
         fundo.draw()
         seta.draw()
 

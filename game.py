@@ -4,7 +4,7 @@ from PPlay.keyboard import *
 from PPlay.collision import *
 from random import randint
 
-def movimento_nave(janela, teclado, nave, Screen_W, dificult):
+def movimento_nave(janela:Window, teclado:Keyboard, nave:Sprite, Screen_W:int, dificult:int) -> Sprite:
     if (teclado.key_pressed("left") and nave.x > 0):
         nave.x = nave.x - 150*janela.delta_time() + dificult*20*janela.delta_time()
     elif (teclado.key_pressed("right") and nave.x < Screen_W - nave.width):
@@ -19,7 +19,7 @@ def desenhar_escudos(Screen_H, Screen_W):
         shields.append(shield)
     return shields
 
-def updateEscudos(shields):
+def updateEscudos(shields) -> None:
     for i in shields:
         i.draw()
 

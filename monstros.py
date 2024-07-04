@@ -20,7 +20,7 @@ def desenhar_mostros(lin, col:int, jan_x:Window):
     return monstro
 
 
-def vitoria_monstros(janela:Window, janela_x, janela_y):
+def vitoria_monstros(janela:Window, janela_x, janela_y) -> None:
     janela.draw_text("GAME OVER", janela_x/2, janela_y/2, size=36, color=(255,255,255))
 
 def colisaoMostroEscudo(monstro:Sprite, escudos:list):

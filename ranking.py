@@ -1,5 +1,7 @@
 from math import floor
 from PPlay.mouse import *
+from PPlay.window import *
+from PPlay.gameimage import *
 
 class Pontuador:
     def __init__(self,nome,pontuacao):
@@ -19,7 +21,7 @@ def consultar():
         rank.sort(key=lambda x:x.pontuacao,reverse=True)
         return rank
 
-def mostrar(janela,lista,Screen_W):
+def mostrar(janela:Window,lista,Screen_W):
 
     janela.draw_text(text=f'{lista[0].nome} {lista[0].pontuacao}', x= (Screen_W / 2)
                      , y= 100, size= 24, color=(255,255,255), font_name="Arial")
@@ -32,7 +34,7 @@ def mostrar(janela,lista,Screen_W):
     janela.draw_text(text=f'{lista[4].nome} {lista[4].pontuacao}', x= (Screen_W / 2)
                      , y= 200, size= 24, color=(255,255,255), font_name="Arial")
 
-def ranking(janela, teclado, Screen_W):
+def ranking(janela, teclado, Screen_W) -> None:
     
     lista = consultar()
     while True:
@@ -45,7 +47,6 @@ def ranking(janela, teclado, Screen_W):
 
 # Outras janelas
 def SetGameState(mouse:Mouse) -> int:
-    print(mouse.get_position())
     if mouse.is_over_area([460,280],[760,325]):
         return 0
     elif mouse.is_over_area([460,380],[760,425]):
@@ -54,3 +55,15 @@ def SetGameState(mouse:Mouse) -> int:
         return 2       
     elif mouse.is_over_area([460,580],[760,625]):
         return 3
+
+def SetPositionSeta(GameState:int, seta:GameImage, Screen_W:int, Screen_H:int) -> GameImage:
+    if GameState == 0:
+        seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) - 80)
+    elif GameState == 1:
+        seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) + 20)
+    elif GameState == 2:
+        seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) + 120)
+    elif GameState == 3:
+        seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) + 220)
+    
+    return seta
