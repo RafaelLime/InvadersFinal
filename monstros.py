@@ -1,7 +1,7 @@
 from PPlay.sprite import *
 from PPlay.window import *
 
-def desenhar_mostros(lin, col, jan_x):
+def desenhar_mostros(lin, col:int, jan_x:Window):
     # matriz de monstros
     monstro = []
     for i in range(lin):
@@ -20,5 +20,11 @@ def desenhar_mostros(lin, col, jan_x):
     return monstro
 
 
-def vitoria_monstros(janela, janela_x, janela_y):
+def vitoria_monstros(janela:Window, janela_x, janela_y):
     janela.draw_text("GAME OVER", janela_x/2, janela_y/2, size=36, color=(255,255,255))
+
+def colisaoMostroEscudo(monstro:Sprite, escudos:list):
+    for escudo in escudos:
+        if monstro.collided(escudo):
+            return True
+    return False

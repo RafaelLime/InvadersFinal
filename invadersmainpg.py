@@ -4,20 +4,20 @@ from PPlay.gameimage import *
 from PPlay.gameobject import *
 from PPlay.sprite import *
 from PPlay.keyboard import *
+from PPlay.mouse import *
 from monstros import *
 from PPlay.animation import *
 from random import choice
 from ranking import *
 from game import *
-import numpy
 
 pygame.init()
 
 
 
 #Janela e Fundo:
-Screen_W = 1000
-Screen_H = 700
+Screen_W, Screen_H = 1000, 700
+
 janela = Window(Screen_W, Screen_H)
 fundo = GameImage("Sprites/menu.jpg")
 janela.set_title("SpaceInvaders - Rafael Lima")
@@ -28,10 +28,9 @@ seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) - 80)
 janela.set_background_color([0, 0, 0])
 
 teclado = Window.get_keyboard()
-lin = 3
-col = 5
-score = 0
-hp = 3
+mouse = Window.get_mouse()
+lin, col, score, hp = 3, 5, 0, 3
+
 
 
 
@@ -50,7 +49,7 @@ def play(dificult = 2):
     
     mobs = 0
     
-    velocidade_x = 250
+    velocidade_x = 125
     velocidade_y = 75
     
     invencivel = False
@@ -87,11 +86,11 @@ def play(dificult = 2):
                     proj = Sprite("Sprites/tirog.png")
                     proj.set_position(monstro.x+monstro.width/2, monstro.y + monstro.height)
                     tiros_mostro.append(proj)
-                    m_reload = 0.5
+                    m_reload = 0.65
 
 
                 # Vitória dos monstros
-                if monstro.y >= shields[0].y:
+                if colisaoMostroEscudo(monstro, shields):    
                     vitoria_monstros(janela, Screen_W, Screen_H)
                     return 0
                 
@@ -109,8 +108,8 @@ def play(dificult = 2):
                 # Colisão dos monstros com tiro
                 for tiro in tiros:
                     for i in shields:
-                            if tiro.collided(i):
-                                tiros.remove(tiro)
+                        if tiro.collided(i):
+                            tiros.remove(tiro)
 
                     if tiro.y < monstro.y or tiro.x < monstro.x:
                         continue
@@ -225,21 +224,25 @@ def main_menu():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+        
             
-        if teclado.key_pressed("S"):
-            GameState += 1
-                    
-        if teclado.key_pressed("W"):
-            GameState -= 1
+        if mouse.is_over_area([460,280],[760,325]):
+            GameState = 0
+        elif mouse.is_over_area([460,380],[760,425]):
+            GameState = 1
+        elif mouse.is_over_area([460,480],[760,525]):
+            GameState = 2    
+        elif mouse.is_over_area([460,580],[760,625]):
+            GameState = 3
             
 
-        if GameState == 0 and teclado.key_pressed("ENTER"):
+        if mouse.is_over_area([460,280],[760,325]) and mouse.is_button_pressed(1):
             return 1
-        if GameState == 1 and teclado.key_pressed("ENTER"):
+        if mouse.is_over_area([460,380],[760,425]) and mouse.is_button_pressed(1):
             dificuldade()
-        if GameState == 2 and teclado.key_pressed("ENTER"):
+        if mouse.is_over_area([460,480],[760,525]) and mouse.is_button_pressed(1):
             ranking(janela, teclado, Screen_W)        
-        if GameState == 3 and teclado.key_pressed("ENTER"):
+        if mouse.is_over_area([460,580],[760,625]) and mouse.is_button_pressed(1):
             pygame.quit()
             sys.exit()
                     

@@ -44,15 +44,15 @@ def criar_tiro(teclado, tiros, nave, reload):
             tiros.append(tiro)
     return tiros, reload
 
-def movimentar_tiros(janela, tiros):
+def movimentar_tiros(janela:Window, tiros):
     for tiro in tiros:
         tiro.draw()
-        tiro.y -= 250*janela.delta_time()
+        tiro.y -= 325*janela.delta_time()
         if (tiro.y < 0):
             del tiro
     return tiros
 
-def updateReloads(janela, reload, m_reload):
+def updateReloads(janela:Window, reload, m_reload):
     if (reload < 0):
         reload = 0
     else:

@@ -1,4 +1,5 @@
 from math import floor
+from PPlay.mouse import *
 
 class Pontuador:
     def __init__(self,nome,pontuacao):
@@ -41,3 +42,15 @@ def ranking(janela, teclado, Screen_W):
             break
         janela.update()
     return
+
+# Outras janelas
+def SetGameState(mouse:Mouse) -> int:
+    print(mouse.get_position())
+    if mouse.is_over_area([460,280],[760,325]):
+        return 0
+    elif mouse.is_over_area([460,380],[760,425]):
+        return 1
+    elif mouse.is_over_area([460,480],[760,525]):
+        return 2       
+    elif mouse.is_over_area([460,580],[760,625]):
+        return 3

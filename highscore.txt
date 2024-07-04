@@ -12,4 +12,3 @@ Kassio: 2585
 GamePro: 14695
 l: 1820
 Gameplay1: 17217
-& C:/Users/rafae/AppData/Local/Programs/Python/Python311/python.exe "c:/UFF/Labjogos/Invaders Guedes/invadersmainpg.py": 12831
