@@ -22,8 +22,7 @@ janela = Window(Screen_W, Screen_H)
 fundo = GameImage("Sprites/menu.jpg")
 janela.set_title("SpaceInvaders - Rafael Lima")
 
-seta = GameImage("Sprites/seta.jpg")
-seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) - 80)
+
 
 janela.set_background_color([0, 0, 0])
 
@@ -45,7 +44,6 @@ def play(dificult = 2):
     nave.set_position(Screen_W/2, Screen_H - 100)
     reload = 0
     m_reload = 0
-    # Linhas e colunas de monstros
     
     mobs = 0
     
@@ -83,10 +81,7 @@ def play(dificult = 2):
                 atira = choice(linha)
             for monstro in linha:
                 if monstro == atira and m_reload <= 0:
-                    proj = Sprite("Sprites/tirog.png")
-                    proj.set_position(monstro.x+monstro.width/2, monstro.y + monstro.height)
-                    tiros_mostro.append(proj)
-                    m_reload = 0.65
+                    tiros_mostro, m_reload = CriaTiroMonstro(monstro, tiros_mostro)
 
 
                 # Vitória dos monstros
@@ -94,22 +89,16 @@ def play(dificult = 2):
                     vitoria_monstros(janela, Screen_W, Screen_H)
                     return 0
                 
-                monstro.x += velocidade_x * janela.delta_time()
-                monstro.draw()
+                monstro = MovimentoHorizontalMonstro(monstro, velocidade_x, janela)
                 if (monstro.x <= 0 or monstro.x + 40 >= Screen_W):
                     # Movimento vertical
-                    for linha in matriz_inimigos:
-                        for monstro in linha:
-                            monstro.x -= velocidade_x * janela.delta_time()
-                            monstro.y += velocidade_y
+                    matriz_inimigos = MovimentoVerticalMonstros(matriz_inimigos, janela, velocidade_x, velocidade_y)
                     
                     velocidade_x *= -1
                 
                 # Colisão dos monstros com tiro
                 for tiro in tiros:
-                    for i in shields:
-                        if tiro.collided(i):
-                            tiros.remove(tiro)
+                    tiros = ColisaoTiroEscudo(tiro, tiros, shields)
 
                     if tiro.y < monstro.y or tiro.x < monstro.x:
                         continue
@@ -174,10 +163,6 @@ def play(dificult = 2):
         reload, m_reload = updateReloads(janela, reload, m_reload)
         
 
-        # Condição para vitória dos monstros
-        # if (matriz_inimigos[lin-1][0].y >= nave.y):
-        #     vitoria_monstros(janela, Screen_W, Screen_H)
-
         # Cálculo do FPS
         # print(f"FPS: {1/janela.delta_time()*1000}")
 
@@ -212,7 +197,8 @@ def dificuldade():
     
 
 def main_menu():
-    global seta
+    seta = GameImage("Sprites/seta.jpg")
+    seta.set_position((Screen_W / 2)- 300, (Screen_H / 2) - 80)
 
     GameState = 0
 

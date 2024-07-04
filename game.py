@@ -75,3 +75,10 @@ def game_over(score, janela, teclado, Screen_W, Screen_H):
         janela.update()
     
     return
+
+def ColisaoTiroEscudo(tiro:Sprite, tiros:list, escudos:list) -> list:
+    for escudo in escudos:
+        if tiro.collided(escudo):
+            tiros.remove(tiro)
+            break
+    return tiros

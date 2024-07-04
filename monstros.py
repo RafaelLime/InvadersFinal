@@ -28,3 +28,22 @@ def colisaoMostroEscudo(monstro:Sprite, escudos:list):
         if monstro.collided(escudo):
             return True
     return False
+
+def CriaTiroMonstro(monstro:Sprite, listaTiros:list):
+    proj = Sprite("Sprites/tirog.png")
+    proj.set_position(monstro.x+monstro.width/2, monstro.y + monstro.height)
+    listaTiros.append(proj)
+    reload = 0.65
+    return listaTiros, reload
+
+def MovimentoVerticalMonstros(matriz:list, janela:Window, Vx:float, Vy:float) -> list:
+    for linha in matriz:
+        for monstro in linha:
+            monstro.x -= Vx * janela.delta_time()
+            monstro.y += Vy
+    return matriz
+
+def MovimentoHorizontalMonstro(monstro:Sprite, Vx:float, jan:Window) -> Sprite:
+    monstro.x += Vx * jan.delta_time()
+    monstro.draw()
+    return monstro
