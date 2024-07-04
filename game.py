@@ -3,6 +3,7 @@ from PPlay.sprite import *
 from PPlay.keyboard import *
 from PPlay.collision import *
 from random import randint
+from math import trunc
 
 def movimento_nave(janela:Window, teclado:Keyboard, nave:Sprite, Screen_W:int, dificult:int) -> Sprite:
     if (teclado.key_pressed("left") and nave.x > 0):
@@ -64,11 +65,11 @@ def updateReloads(janela:Window, reload, m_reload):
         m_reload -= janela.delta_time()
     return reload, m_reload
 
-def game_over(score, janela, teclado, Screen_W, Screen_H):
+def game_over(score:float, janela, teclado, Screen_W, Screen_H):
     janela.set_background_color([0, 0, 0])
     while True:
         janela.draw_text("GAME OVER",Screen_W/3 + 100, Screen_H/2 - 40, size=36, color=([255, 255, 255]))
-        janela.draw_text(f"Pontuação: {score}",Screen_W/3 - 40, Screen_H/2 + 80, size=36, color=([255, 255, 255]))
+        janela.draw_text(f"Pontuação: {trunc(score)}",Screen_W/3 - 40, Screen_H/2 + 80, size=36, color=([255, 255, 255]))
         janela.draw_text(f"Pressione espaço para voltar ao menu",Screen_W/3 - 40, Screen_H/2 + 120, size=36, color=([255, 255, 255]))
         if teclado.key_pressed("space"):
             break

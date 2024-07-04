@@ -136,13 +136,8 @@ def play(dificult = 2):
                         escud.y += 3
                     tiros_mostro.remove(projetil)
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    main_menu()
+        if teclado.key_pressed("esc"):
+            exit()
         # Atualização dos reloads
         reload, m_reload = updateReloads(janela, reload, m_reload)
 
@@ -152,14 +147,15 @@ def play(dificult = 2):
 
 
 
+while True:
+    if main_menu(janela, teclado, mouse, Screen_W, Screen_H) == 1:
+        diff = 2
+        while True:
+            if play(diff) == 0:
+                break
+            col += 1
+            diff += 0.2
 
-if main_menu(janela, teclado, mouse, Screen_W, Screen_H) == 1:
-    diff = 2
-    while True:
-        if play(diff) == 0:
-            break
-        col += 1
-        diff += 0.2
-
-    game_over(score, janela, teclado, Screen_W, Screen_H)
-    main_menu(janela, teclado, mouse, Screen_W, Screen_H)
+        game_over(score, janela, teclado, Screen_W, Screen_H)
+    else:
+        break
