@@ -23,18 +23,21 @@ janela.set_title("SpaceInvaders - Rafael Lima")
 janela.set_background_color([0, 0, 0])
 teclado = Window.get_keyboard()
 mouse = Window.get_mouse()
-lin, col, score, hp = 3, 5, 0, 3
+lin, col, score = 3, 5, 0
+hp = 3
 
 def play(dificult = 2):
     global score
     global hp
+    global Screen_W
+    global Screen_H
 
     tiros = []
     tiros_mostro = []
     shields = desenhar_escudos(Screen_H, Screen_W)
     nave = Sprite("Sprites/nave2.png")
     nave.set_position(Screen_W/2, Screen_H - 100)
-    reload, m_reload, mobs, time_inv = 0, 0, 0, 0 
+    reload, m_reload, mobs, time_inv, tiros_rep = 0, 0, 0, 0, 0
     velocidade_x, velocidade_y = 125, 75
     invencivel, atingiu = False, False
 
@@ -102,7 +105,33 @@ def play(dificult = 2):
         
         # Tiros
         # Se a tecla espaço está pressionada criar novo tiro
-        tiros, reload = criar_tiro(teclado, tiros, nave, reload)
+        tiros, reload, tiros_rep = criar_tiro(teclado, tiros, nave, reload, tiros_rep)
+        if tiros_rep >= 10:
+            tiros_rep = 0
+            hp -= 1
+            nave = Sprite("Sprites/nave2.png")
+            nave.set_position(Screen_W/2, Screen_H - 100)
+            invencivel = True
+            time_inv = 2
+            if hp == 0:
+                score += (200 - janela.time_elapsed()/1000)*10
+                nome = input("Digite seu nome para registro: ")
+                registrar(nome,score)
+                return 0
+        elif tiros_rep >= 5:
+            # Aparecer sprite de fogo
+            y = nave.y
+            x = nave.x
+            nave = Sprite("Sprites/navequente.png")
+            nave.set_position(x, y)
+        
+        if teclado.key_pressed("space") == False:
+            x = nave.x
+            y = nave.y
+            nave = Sprite("Sprites/nave2.png")
+            nave.set_position(x, y)
+            tiros_rep = 0
+
         
         tiros = movimentar_tiros(janela, tiros)
 
@@ -144,7 +173,6 @@ def play(dificult = 2):
         janela.update()
     
     return 1  
-
 
 
 while True:

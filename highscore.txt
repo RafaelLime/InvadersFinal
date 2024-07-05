@@ -14,3 +14,7 @@ l: 1820
 Gameplay1: 17217
 Teste: 7730
 RafaRecord: 18651
+Lois: 2506
+Teste1: 1933
+Rafael1: 8291
+Teste2: 5759

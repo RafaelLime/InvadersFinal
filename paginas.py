@@ -74,18 +74,24 @@ def dificuldade(jan:Window, teclado:Keyboard, Screen_W:int) -> None:
         
         jan.set_background_color([0, 0, 0])
 
-        jan.draw_text(text='Facil', x= (Screen_W / 2)
+        jan.draw_text(text='Facil - 1', x= (Screen_W / 2)
                      , y= 20, size= 24, color=(255,255,255), font_name="Arial")
-        jan.draw_text(text='Normal', x= (Screen_W / 2)
+        jan.draw_text(text='Normal - 2', x= (Screen_W / 2)
                      , y= 60, size= 24, color=(255,255,255), font_name="Arial")
-        jan.draw_text(text='Hard', x= (Screen_W / 2)
+        jan.draw_text(text='Hard - 3', x= (Screen_W / 2)
                      , y= 100, size= 24, color=(255,255,255), font_name="Arial")
+
+        dif = int(input("Digite a dificuldade do jogo: "))
+        if dif < 0:
+            dif = 0
+        elif dif > 2:
+            dif = 2
 
 
         if teclado.key_pressed("esc"):
             break
         jan.update()
-    return
+    return dif
 
 def main_menu(jan:Window, teclado:Keyboard, mouse:Mouse, Screen_W:int, Screen_H:int):
     fundo = GameImage("Sprites/menu.jpg")

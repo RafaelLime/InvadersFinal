@@ -24,7 +24,7 @@ def updateEscudos(shields) -> None:
     for i in shields:
         i.draw()
 
-def desenharNave(janela, nave, time_inv, invencivel):
+def desenharNave(janela, nave:Sprite, time_inv, invencivel):
     if invencivel:
         time_inv -= janela.delta_time()
         if bool(randint(0,1)):
@@ -37,13 +37,14 @@ def desenharNave(janela, nave, time_inv, invencivel):
         nave.draw()
     return time_inv,nave,invencivel
 
-def criar_tiro(teclado, tiros, nave, reload):
+def criar_tiro(teclado, tiros, nave, reload, rep):
     if (teclado.key_pressed("space") and reload <= 0):
-            tiro = Sprite("Sprites/tirog.png")
-            tiro.set_position(nave.x+nave.width/2, nave.y)
-            reload = 0.3
-            tiros.append(tiro)
-    return tiros, reload
+        rep += 1
+        tiro = Sprite("Sprites/tirog.png")
+        tiro.set_position(nave.x+nave.width/2, nave.y)
+        reload = 0.3
+        tiros.append(tiro)
+    return tiros, reload, rep
 
 def movimentar_tiros(janela:Window, tiros):
     for tiro in tiros:
